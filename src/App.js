@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {BrowserRouter,Route,Routes,Navigate} from "react-router-dom";
+import { NotFound,Home,Signin } from "./components/pages/index";
+import { connect } from "react-redux";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const  App = (props) => {
+    const {isLoggedin}=props;
+    console.log({isLoggedin})
+    return (
+      <BrowserRouter>
+        <Routes>  
+          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={isLoggedin ? <Navigate to="/home" /> : <Signin />} />
+          <Route path="/home" element={< Home/>} />
+        </Routes>
+      </BrowserRouter>
+    );
 }
 
-export default App;
+const mapStateToProps = ({isLoggedin}) => ({isLoggedin});
+
+export default connect(mapStateToProps)(App);
